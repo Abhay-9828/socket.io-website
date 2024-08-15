@@ -205,12 +205,19 @@ The `emitWithAck()` method provides the same functionality, but returns a Promis
 *Client*
 
 ```js
-try {
-  const response = await socket.timeout(5000).emitWithAck('request', { foo: 'bar' }, 'baz');
-  console.log(response.status); // 'ok'
-} catch (e) {
-  // the server did not acknowledge the event in the given delay
+// Assuming this is inside an async function
+async function sendRequest() {
+  try {
+    const response = await socket.timeout(5000).emitWithAck('request', { foo: 'bar' }, 'baz');
+    console.log(response.status); // 'ok'
+  } catch (e) {
+    console.error('The server did not acknowledge the event in the given delay', e);
+  }
 }
+
+// Call the function
+sendRequest();
+
 ```
 
 *Server*
